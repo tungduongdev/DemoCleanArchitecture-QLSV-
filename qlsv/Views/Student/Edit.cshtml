@@ -1,0 +1,82 @@
+﻿@model Domain.Entities.Student
+
+@{
+    ViewData["Title"] = "Sửa sinh viên";
+}
+
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+
+<div class="container mt-5">
+    <h2 class="text-center">@ViewData["Title"]</h2>
+
+    <form id="studentForm" method="post">
+        <input type="hidden" asp-for="Id" id="IdStudent" value="@Model.Id" />
+
+        <div class="form-group">
+            <label for="Name">Tên:</label>
+            <input type="text" class="form-control" id="Name" name="Name" value="@Model.Name" required />
+        </div>
+
+        <div class="form-group">
+            <label for="Class">Lớp:</label>
+            <input type="text" class="form-control" id="Class" name="Class" value="@Model.Class" required />
+        </div>
+
+        <div class="form-group">
+            <label for="Age">Tuổi:</label>
+            <input type="number" class="form-control" id="Age" name="Age" value="@Model.Age" required />
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block">Cập nhật</button>
+    </form>
+
+    <div id="message" class="mt-3"></div> <!-- Khu vực hiển thị thông báo -->
+</div>
+
+<script>
+    document.getElementById("studentForm").addEventListener("submit", function (event) {
+        event.preventDefault();  // Ngăn form không gửi theo cách mặc định
+
+        // Lấy phần tử Id
+        const idElement = document.getElementById("IdStudent").value
+        console.log("id", idElement)
+        if (idElement && idElement) {  // Kiểm tra Id có tồn tại và có giá trị
+            const studentData = {
+                Id: idElement,
+                Name: document.getElementById("Name").value,
+                Class: document.getElementById("Class").value,
+                Age: parseInt(document.getElementById("Age").value)
+            };
+
+            // Gửi dữ liệu dưới dạng JSON tới endpoint cập nhật
+            fetch(`/students/edit/${studentData.Id}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(studentData)
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Cập nhật thất bại");
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    document.getElementById("message").innerHTML =
+                        "<div class='alert alert-success'>Cập nhật thành công!</div>";
+
+                    setTimeout(() => {
+                        window.location.href = "/students";  // Chuyển hướng về trang danh sách
+                    }, 2000);
+                })
+                .catch(error => {
+                    console.error("Lỗi:", error);
+                    document.getElementById("message").innerHTML =
+                        "<div class='alert alert-danger'>Có lỗi xảy ra: " + error.message + "</div>";
+                });
+        } else {
+            console.error("Phần tử Id không tồn tại hoặc không có giá trị.");
+        }
+    });
+</script>

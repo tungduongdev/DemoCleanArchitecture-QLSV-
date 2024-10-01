@@ -1,0 +1,33 @@
+﻿@model Domain.Entities.Student
+
+@{
+    ViewData["Title"] = "Chi tiết sinh viên";
+}
+
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+
+<div class="container mt-5">
+    <h2 class="text-center">@ViewData["Title"]</h2>
+
+    <div class="card">
+        <div class="card-header">
+            <h4>Sinh viên</h4>
+        </div>
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3">Tên:</dt>
+                <dd class="col-sm-9">@Model.Name</dd>
+
+                <dt class="col-sm-3">Lớp:</dt>
+                <dd class="col-sm-9">@Model.Class</dd>
+
+                <dt class="col-sm-3">Tuổi:</dt>
+                <dd class="col-sm-9">@Model.Age</dd>
+            </dl>
+        </div>
+        <div class="card-footer text-center">
+            <a href="/students/edit/@Model.Id" class="btn btn-warning">Sửa</a>
+            <a href="/students" class="btn btn-secondary">Trở lại danh sách</a>
+        </div>
+    </div>
+</div>

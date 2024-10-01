@@ -1,0 +1,94 @@
+﻿@model Domain.Entities.Student
+
+@{
+    ViewData["Title"] = "Thêm sinh viên";
+}
+
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+
+<!-- Thêm lưới Bootstrap cho giao diện -->
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <h2 class="text-center mb-4">Thêm sinh viên</h2>
+
+            <!-- Form Bootstrap -->
+            <form id="studentForm">
+                <div class="form-group">
+                    <label for="Name">Tên:</label>
+                    <input type="text" class="form-control" id="Name" name="Name" placeholder="Nhập tên sinh viên" required />
+                </div>
+                <div class="form-group">
+                    <label for="Class">Lớp:</label>
+                    <input type="text" class="form-control" id="Class" name="Class" placeholder="Nhập lớp sinh viên" required />
+                </div>
+                <div class="form-group">
+                    <label for="Age">Tuổi:</label>
+                    <input type="number" class="form-control" id="Age" name="Age" placeholder="Nhập tuổi sinh viên" required />
+                </div>
+                <button type="submit" class="btn btn-primary btn-block mt-4">Thêm</button>
+            </form>
+
+            <!-- Thêm thông báo lỗi hoặc thành công -->
+            <div id="message" class="mt-3"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap alert và script -->
+ <script>
+     document.getElementById("studentForm").addEventListener("submit", function (event) {
+         event.preventDefault();  // Ngăn form không gửi theo cách mặc định
+
+         // Tạo một đối tượng từ các trường form
+         const studentData = {
+             Name: document.getElementById("Name").value,
+             Class: document.getElementById("Class").value,
+             Age: parseInt(document.getElementById("Age").value)
+         };
+
+         // Gửi dữ liệu dưới dạng JSON
+         fetch("/students/create", {
+             method: "POST",
+             headers: {
+                 "Content-Type": "application/json"
+             },
+             body: JSON.stringify(studentData)
+         })
+             .then(response => {
+                 // Kiểm tra xem phản hồi có phải là JSON không
+                 const contentType = response.headers.get("content-type");
+                 if (contentType && contentType.includes("application/json")) {
+                     return response.json();  // Trả về JSON nếu đúng kiểu dữ liệu
+                 } else {
+                     // Nếu không phải JSON, có thể là trang HTML (lỗi 404, 500,...)
+                     return response.text().then(html => {
+                         throw new Error(`Server returned an unexpected response: ${html}`);
+                     });
+                 }
+             })
+             .then(data => {
+                 if (data.success) {
+                     // Hiển thị thông báo thành công
+                     document.getElementById("message").innerHTML =
+                         "<div class='alert alert-success'>Thêm sinh viên thành công!</div>";
+
+                     // Chuyển hướng về trang danh sách sinh viên sau 2 giây
+                     setTimeout(() => {
+                         window.location.href = "/students";
+                     }, 2000);
+                 } else {
+                     // Hiển thị thông báo lỗi nếu có lỗi từ server
+                     document.getElementById("message").innerHTML =
+                         "<div class='alert alert-danger'>Lỗi khi thêm sinh viên</div>";
+                 }
+             })
+             .catch((error) => {
+                 console.error("Error:", error);
+                 // Hiển thị thông báo lỗi trong trường hợp lỗi kết nối hoặc server không trả về JSON
+                 document.getElementById("message").innerHTML =
+                     "<div class='alert alert-danger'>Có lỗi xảy ra: " + error.message + "</div>";
+             });
+     });
+ </script>
+

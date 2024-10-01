@@ -1,0 +1,26 @@
+﻿@model Domain.Entities.Student
+
+@{
+    ViewData["Title"] = "Xóa sinh viên";
+}
+
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header text-center">
+                    <h4>Xóa sinh viên</h4>
+                </div>
+                <div class="card-body text-center">
+                    <p>Bạn có chắc chắn muốn xóa sinh viên <strong>@Model.Name</strong> không?</p>
+                    <form method="post">
+                        <button type="submit" class="btn btn-danger">Xóa</button>
+                        <a href="/Student" class="btn btn-secondary">Hủy</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
