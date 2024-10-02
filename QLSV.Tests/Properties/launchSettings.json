@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "QLSV.Tests": {
+      "commandName": "Project"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker"
+    }
+  }
+}
