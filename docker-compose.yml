@@ -1,0 +1,19 @@
+﻿
+services:
+  app:
+    image: qlsv-app
+    build:
+      context: ./qlsv
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+
+  db:
+    image: "mcr.microsoft.com/mssql/server:2019-latest"
+    environment:
+      SA_PASSWORD: "1234"  # Đặt mật khẩu của bạn ở đây
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"

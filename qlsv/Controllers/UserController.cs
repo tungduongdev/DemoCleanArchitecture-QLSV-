@@ -30,7 +30,7 @@ namespace presentation.Controllers
             {
                 // Đăng nhập thành công
                 HttpContext.Session.SetString("Username", username); // Lưu thông tin vào 
-                return RedirectToAction("","students"); // Chuyển hướng đến danh sách sinh viên
+                return RedirectToAction("Index", "Student"); // Chuyển hướng đến danh sách sinh viên
             }
             else
             {

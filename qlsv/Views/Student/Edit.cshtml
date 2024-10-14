@@ -26,8 +26,10 @@
             <label for="Age">Tuổi:</label>
             <input type="number" class="form-control" id="Age" name="Age" value="@Model.Age" required />
         </div>
-
-        <button type="submit" class="btn btn-primary btn-block">Cập nhật</button>
+        <div style="margin-top:10px">
+            <button type="submit" class="btn btn-primary btn-block">Cập nhật</button>
+            <a href="/students/index" class="btn btn-secondary">Trở lại danh sách</a>
+        </div>
     </form>
 
     <div id="message" class="mt-3"></div> <!-- Khu vực hiển thị thông báo -->

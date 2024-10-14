@@ -17,9 +17,20 @@ namespace Application.UseCases
             _studentRepository = studentRepository;
         }
 
-        public IEnumerable<Student> Execute()
+        public PaginatedResult<Student> Execute(int pageNumber, int pageSize)
         {
-            return _studentRepository.GetAll();
+            var students = _studentRepository.GetAll(); // Lấy tất cả sinh viên
+            var totalCount = students.Count();
+
+            var paginatedStudents = students.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+
+            return new PaginatedResult<Student>
+            {
+                Items = paginatedStudents,
+                TotalCount = totalCount,
+                PageNumber = pageNumber,
+                PageSize = pageSize
+            };
         }
     }
 }

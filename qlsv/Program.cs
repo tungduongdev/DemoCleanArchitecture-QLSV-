@@ -18,7 +18,7 @@ builder.Services.AddScoped<IStudentRepository, StudentRepository>();
 // Thêm dịch vụ Session
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromMinutes(0.5); // Thời gian timeout cho session
+    options.IdleTimeout = TimeSpan.FromMinutes(15); // Thời gian timeout cho session
     options.Cookie.HttpOnly = true; // Cookie chỉ có thể được truy cập từ phía máy chủ
 });
 // Add UseCase services
@@ -49,7 +49,7 @@ app.UseAuthorization();
 app.Use(async (context, next) =>
 {
     // Kiểm tra nếu yêu cầu đến "/students" mà chưa có Username trong session
-    if (context.Request.Path.StartsWithSegments("/students") && !context.Session.TryGetValue("Username", out _))
+    if (context.Request.Path.StartsWithSegments("/students/index") && !context.Session.TryGetValue("Username", out _))
     {
         context.Response.Redirect("/user/login");
         return;
